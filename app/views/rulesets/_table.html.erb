@@ -1,0 +1,42 @@
+ <table class="table table-bordered table-striped table-highlight">
+      <thead>
+        <tr>
+
+          <th> Name </th>
+          <th> # Rules </th>
+          <th> Status <a href='#' id='status-tooltip'> <i class='icon-question-sign'></i></a></th>
+          <th> Modified</th>
+          <th><%=t '.actions', :default => t("helpers.actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rulesets.each do |ruleset| %>
+          <tr>
+            <td><%= link_to ruleset.name, ruleset_rules_path(ruleset) %></td>
+            <td><%= link_to ruleset.rules.count, ruleset_rules_path(ruleset) %></td>
+            <td><%= ruleset_status_icon(ruleset.status).html_safe %></td>
+            <td><%= ruleset.updated_at.to_s(:summary) %></td>
+            <td>
+              <% unless ruleset.locked? %>
+             
+                <%= link_to t('.clone', :default => t("Clone")),
+                            ruleset_clone_path(ruleset),
+                            :method => :post,
+                            :class => 'btn btn-mini btn-warning' %> 
+                <%= link_to t('.rules', :default => t("helpers.links.rules")),
+                            ruleset_rules_path(ruleset), :class => 'btn btn-mini' %>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <% if !ruleset.active? %> 
+                  <%= link_to content_tag('i', '', class: 'icon-pencil'),
+                            edit_ruleset_path(ruleset)%> 
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <%= link_to content_tag('i', '', class: 'icon-trash'), ruleset, confirm: "Are you sure you want to delete #{ruleset.name}?", method: :delete, "modal-warning" => "rulesets" %>
+                <% end %> 
+
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <script type='text/javascript'>$('#status-tooltip').tooltip(); </script>

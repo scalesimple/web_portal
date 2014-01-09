@@ -1,0 +1,24 @@
+<% if @tokens.size == 0 %> 
+  <%= render 'first_time' %> 
+  <%= link_to 'Generate you first token', new_token_path %>
+
+<% else %> 
+
+<div class='widget stacked'>
+
+
+  <div class="widget-header">
+     <i class="icon-lock"></i>
+    <h3><%=t '.title', :default => "Tokens" %></h3>
+    <%= link_to t('.new_token', :default => t("New Token")),
+              new_token_path,
+              :class => 'btn btn-secondary' %>
+  </div>
+
+  <div class="widget-content">
+    <%= render 'tokens/table', :tokens => @tokens  %> 
+  </div> <!-- widget content -->
+</div> <!-- widget --> 
+
+<% end %> 
+

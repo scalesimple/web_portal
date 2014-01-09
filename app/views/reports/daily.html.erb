@@ -1,0 +1,70 @@
+<%= render 'header' %> 
+
+<br/><Br/>
+
+<div id='hostname' style='float: left;'>
+	<%= hostname_dropdown(@hostname,@hostnames).html_safe %> 
+</div>
+
+<div id='picker' style='float:right;'>Pick a Day (m/d/y): <input type='text' id='dp1'></input></div>
+
+<br/><br/><div 
+<div id="container" style="width:400px; float:left;"></div>
+<div id='container2' style='width:350px; float:right;'></div>
+
+<script type='text/javascript'>
+
+
+ function getTodaysDate(val) {
+
+ 	var kvp = document.location.search.substr(1).split('&');
+ 	var t = new Date;
+ 	var day, month, year = t.getFullYear();
+
+    for(i=0; i< kvp.length; i++) { 
+       var x =  kvp[i].split('=');
+       if (x[0] == 'month' ) { month = x[1];}
+       if (x[0] == 'day' ) { day = x[1];}
+       if (x[0] == 'year' ) { year = x[1];}
+    }
+
+    // If we set the date then return it otherwise return today's date below 
+    if (day && month && year) { return (month + '/' + day + '/' + year ); }
+
+   
+    //No date set, return today 
+
+    if (t.getDate() < 10) {
+        day =  t.getDate();
+    }
+    else {
+        day = t.getDate();
+    }
+    if ((t.getMonth() + 1) < 10) {
+        month = (t.getMonth() + 1 - val);
+    }
+    else {
+        month = t.getMonth() + 1 - val;
+    }
+
+    return (month + '/' + day + '/' + year);
+   }
+
+
+ $(function() {
+ 	<% if @entry %>
+    loadDailyCharts(<%= @entry.measures["bytes"] || 0 %>, <%= @entry.measures["hits"] || 0  %>, <%= @entry.measures["misses"] || 0 %> ); 
+    <% else %> 
+     loadDailyCharts(0,0,0); 
+    <% end %> 
+    $('#dp1').datepicker({
+    	showOptions: {direction: "down"},
+    	dateFormat: "m/d/yy",
+    	onSelect: function(date) { 
+    		        fields = date.split('/')
+    		        insertParams(['month','day','year'],[fields[0],fields[1],fields[2]]);
+    	          }
+    }).val(getTodaysDate(0));
+ });
+ 
+ </script>   

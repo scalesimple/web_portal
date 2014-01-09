@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Hostname:</b>
+  <%= @purge.hostname %>
+</p>
+
+<p>
+  <b>Path:</b>
+  <%= @purge.path %>
+</p>
+
+<p>
+  <b>Account:</b>
+  <%= @purge.account_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_purge_path(@purge) %> |
+<%= link_to 'Back', purges_path %>

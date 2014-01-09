@@ -1,0 +1,34 @@
+<% if @ruleset.errors.any? %>
+    <div class="error-box">
+      <div class="alert alert-error">
+      <% @ruleset.errors.full_messages.each do |msg| %>
+        <p><%= msg %>
+      <% end %>
+      </div>
+    </div>
+<% end %>
+
+<%= form_for @ruleset, :html => { :class => 'form-horizontal' } do |f| %>
+
+  <div class="control-group">
+    <%= f.label :name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :name, :class => 'text_field' %>
+    </div>
+  </div>
+
+  <% if @ruleset.new_record? %> 
+  <div class="control-group">
+    <label class="control-label" for="ruleset_ruleset_template">Ruleset template <a href='#' id='template-tooltip'> <i class='icon-question-sign'></i></a></label>
+    <div class="controls">
+      <%= f.select :ruleset_template_id, @system_rulesets.asc(:name).map{|n| [n.name,n.id]}, :prompt => "Choose a template", :class => 'text_field' %>
+    </div>
+  </div>
+  <% end %> 
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                rulesets_path, :class => 'btn' %>
+  </div>
+<% end %>

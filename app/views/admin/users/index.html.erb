@@ -1,0 +1,33 @@
+ <table class="table table-bordered table-striped table-highlight">
+      <thead>
+        <tr>
+
+          <th> Email </th>
+          <th> Cofirmed <a href='#' id='status-tooltip'> </th>
+          <th> Registered</th>
+          <th> Confirmation Status</th>
+          <th> Disabled Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.email  %></td>
+            <td><%= user.confirmed? %></td>
+            <td><%= user.created_at %></td>
+            <td>
+              <% if user.confirmation_sent_at? && !user.confirmed? %>  
+                <%= link_to 'Send Email Invite' , admin_user_confirm_path(user.id) %>      
+              <% else %>       
+                <%= 'Confirmed at ' + user.confirmed_at.to_s %> 
+              <% end %> 
+            </td>
+            <td> <% if user.disabled? %> 
+                   <%= link_to 'Enable Account', admin_user_enable_path(user.id) %>
+                  <% else %>
+                   <%= link_to 'Disable Account', admin_user_disable_path(user.id) %>
+                   <% end %> 
+          </tr>
+        <% end %>
+      </tbody>
+    </table>

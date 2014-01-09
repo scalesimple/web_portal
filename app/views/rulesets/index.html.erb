@@ -1,0 +1,20 @@
+<%- model_class = Ruleset -%>
+
+<div class='widget stacked'>
+
+
+  <div class="widget-header">
+     <i class="icon-magic"></i>
+    <h3><%=t '.title', :default => "Rulesets" %></h3>
+    <%= link_to t('.new_ruleset', :default => t("New Ruleset")),
+              new_ruleset_path,
+              :class => 'btn btn-secondary' %>
+  </div>
+
+  <div class="widget-content">
+    <%= render 'rulesets/table', :rulesets => @rulesets  %> 
+  </div> <!-- widget content -->
+</div> <!-- widget --> 
+
+
+

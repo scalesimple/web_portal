@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require 'rubygems'
+require 'net/dns'
+
+Hostname.all.collect { |h|
+  next if h.active?
+  puts "Testing hostname " + h.name
+  d = Net::DNS::Resolver.start(h.name + '.').each_cname { |c|
+    if c == h.name + '.' + $CNAME_TYPE[:prod] + '.'
+      h.activate
+    end
+  }
+}

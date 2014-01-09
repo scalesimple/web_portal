@@ -1,0 +1,120 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+
+      <div class="navbar-inner">
+  
+        <div class="container">
+
+          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+
+          <a class="brand" href="#"><img src='/assets/ss_logo2.png' width='300px' height='80px'></a>
+
+          <% if current_user %>
+          <div class="collapse nav-collapse">
+
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Accounts
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <% current_user.authorized_accounts.only(:id, :name).each do |a| %>
+                  <li>
+                  <%= link_to a.name, a  %>
+                  </li>
+                  <% end %>
+                </ul>
+              </li>
+              
+            </ul>
+            
+            <% if current_account %> 
+            <ul class="nav"><li style="color: #FFFFFF;padding: 10px 15px;font-size: 11px;">Current Account: <%= current_account.name %> </li></ul>
+            <% end %>
+
+            <ul class="nav pull-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <%= current_user.email %>
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu"> 
+                  <li>
+                  <%= link_to "Sign Out", "/users/sign_out", :method=>:delete  %>
+                  </li>  
+                  <li>
+                    <%= link_to "Change Password", edit_user_registration_path %>
+                  </li>    
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+
+
+<% if current_user %> 
+<div class="subnavbar">
+
+  <div class="subnavbar-inner">
+  
+    <div class="container">
+      
+      <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">
+        <i class="icon-reorder"></i>
+      </a>
+
+      <div class="subnav-collapse collapse">
+        <ul class="mainnav">
+        
+          <li <%= active_menu('hostnames',params[:controller]).html_safe %> >
+            <a href="/hostnames">
+              <i class="icon-cloud"></i>
+              <span>Hostnames</span>
+            </a>              
+          </li>
+          
+          <li <%= active_menu('rulesets',params[:controller]).html_safe %> >
+            <a href="/rulesets">
+              <i class="icon-magic"></i>
+              <span>Rulesets</span>
+            </a>              
+          </li>
+
+          <li <%= active_menu('purges',params[:controller]).html_safe %> >
+            <a href="/purges">
+              <i class="icon-remove-sign"></i>
+              <span>Purge Content</span>
+            </a>              
+          </li>
+
+          <li <%= active_menu('reports',params[:controller]).html_safe %> >
+            <a href="/reports">
+              <i class="icon-bar-chart"></i>
+              <span>Reports</span>
+            </a>              
+          </li>
+
+          <li <%= active_menu('tokens',params[:controller]).html_safe %> >
+            <a href="/tokens">
+              <i class="icon-lock"></i>
+              <span>Tokens</span>
+            </a>              
+          </li>
+        
+        </ul>
+      </div> <!-- /.subnav-collapse -->
+
+    </div> <!-- /container -->
+  
+  </div> <!-- /subnavbar-inner -->
+
+</div> <!-- /subnavbar -->
+<% end %> 

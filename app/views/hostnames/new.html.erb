@@ -1,0 +1,5 @@
+<%- model_class = Hostname -%>
+<div>
+  <h2><%=t '.title', :default => [:'new_hostname', 'Create new Hostname'], :model => model_class.model_name.human %></h2>
+</div>
+<%= render :partial => 'form' %>
