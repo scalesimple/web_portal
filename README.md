@@ -5,10 +5,10 @@ Scalesimple is an open source CDN platform.  The platform consists of multiple r
 
 We have exposed access to the basic HTTP functionality (headers, query strings, etc) but have also added in more enterprise features like Geo Blocking and TokenAuth.  The concept we had was to allow anyone to have a very customized ruleset for their caching needs, without needing to know tons of VCL.  The major components of ScaleSimple are 
 
-   * Varnish
-   * Ruby/Rails
+   * Varnish 3.0+
+   * Ruby/Rails 
    * MongoDB
-   * fluentd
+   * fluentd (optional)
    * vagent2 
    * RabbitMQ
 

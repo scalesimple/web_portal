@@ -1,5 +1,5 @@
 class RulesetMailer < ActionMailer::Base
-  default from: "noreply@scalesimple.com"
+  default from: $DEFAULT_EMAIL_FROM
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:

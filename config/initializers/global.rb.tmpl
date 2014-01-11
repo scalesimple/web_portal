@@ -1,0 +1,48 @@
+$CNAME_SUFFIX="dev.scalesimple.net"
+$CNAME_TYPE = Hash.new
+$CNAME_TYPE[:test] = "test.dev.scalesimple.net"
+$CNAME_TYPE[:stage] = "stage.scalesimple.net"
+$CNAME_TYPE[:prod] = "edge.scalesimple.net"
+
+#------------------------
+# For dev mode, skip DNS creation
+#-------------------------
+$SKIP_DNS=false
+
+#------------------------------
+# RabbitMQ Config for publish
+#------------------------------
+$RABBIT_DEFAULT_KEY='jobs'
+$RABBIT_USER='guest'
+$RABBIT_PASSWORD='guest'
+$RABBIT_HOSTNAME='127.0.0.1'
+$RABBIT_EXCHANGE='scalesimple'
+
+
+#------------------------------------------------#
+## DNS Settings
+#------------------------------------------------#
+$DNS_APIKEY = "dns-api-key"
+$DNS_SECRET = "dns-secret"
+
+#---------------------------
+# Time formats
+#---------------------------
+Time::DATE_FORMATS[:summary] = "%b-%e-%Y  %H:%M"
+
+#---------------------------------------
+# Predefine global admins, prob 
+# a more dynamic way to handle this :) 
+#---------------------------------------
+$GLOBAL_ADMINS=['foo@bar.com']
+
+#--------------------------------------
+# This email gets notified for each new
+# registration
+#---------------------------------------
+$REGISTRATION_NOTIFIER_EMAIL="registrations@example.com"
+
+#---------------------------------------
+# Default FROM: Address for email 
+#---------------------------------------
+$DEFAULT_EMAIL_FROM="noreply@example.com" 

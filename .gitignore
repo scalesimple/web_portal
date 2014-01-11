@@ -14,7 +14,7 @@
 /log/*.log
 /tmp
 config/mongoid.yml
-config/unicorn/development.rb
+config/unicorn.rb 
 config/initializers/global.rb
 public/assets/application.js
 public/assets/application.css
@@ -28,6 +28,7 @@ capybara-*.html
 .rvmrc
 /.bundle
 /vendor/bundle
+/vendor/cache
 /log/*
 /tmp/*
 /db/*.sqlite3

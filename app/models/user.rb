@@ -50,7 +50,7 @@ class User
 
    field :global_admin , :type => Boolean, :default => false 
 
-   before_create :skip_confirm_email
+   before_create :skip_confirm_email  ## Comment out if you want registrations to go right away without approval 
 
    def authorized_accounts
     if self.global_admin?
