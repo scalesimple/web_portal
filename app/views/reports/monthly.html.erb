@@ -1,0 +1,52 @@
+
+<%= render 'header' %> 
+
+<br/>
+<Br/>
+
+<div id='hostname' style='float: left;'>
+	<%= hostname_dropdown(@hostname,@hostnames).html_safe %> 
+</div>
+
+<div id='dropdowns' style="float: right">
+	<%= year_dropdown.html_safe %>
+	<%= month_dropdown(@month).html_safe %> 
+</div>
+
+<br/>
+<br/>
+
+Total GBytes: <%= @total_bytes %> Gb<br/>
+Avg Cache Hitrate: <%= @hitrate_avg %> %
+
+<br/>
+
+<div id='container'></div> <br/>
+
+
+<div id='container2'></div>
+
+
+<script type='text/javascript'>
+$(function() {
+	var hits = [];
+	var bytes = []; 
+
+    <% @hits.sort.each do |k,v| %> 
+		hits.push({
+          name: <%= ('"' +  k.to_s + '"').html_safe %> ,
+          y: <%= v %> 
+		});
+    <% end %> 
+
+      <% @bytes.sort.each do |k,v| %> 
+		bytes.push({
+          name: <%= ('"' +  k.to_s + '"').html_safe %> ,
+          y: <%= v %> 
+		});
+    <% end %> 
+
+    loadMonthlyCharts(hits,bytes); 
+
+ });
+ </script>

@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+#require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require 'rubygems'
+require 'net/dns/resolver'
+
+['www.consumer2.com','www.demo1.com'].each { |h| 
+  puts "Looking up hostname #{h}"
+  Net::DNS::Resolver.start(h).each_cname { |c| 
+    puts "CNAME : " + c 
+    #if c == h.name + '.' + $CNAME_TYPE[:prod] + '.' 
+    #  h.update_attribute('cname_status_id', $HOSTNAME_CNAME_STATUS[:active]) 
+    #else
+    #  puts "No Match against #{c} being equal to " + h.name + '.' + $CNAME_TYPE[:prod]
+    #end
+  }
+} 
+

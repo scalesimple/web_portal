@@ -1,0 +1,67 @@
+<div class="row">
+
+<div class="span6">
+
+<%= form_for(@token) do |f| %>
+  <% if @token.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@token.errors.count, "error") %> in token form:</h2>
+
+      <ul>
+      <% @token.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="control-group">
+    <label class="control-label" for="token_secret">Token Location <a href='#' id='token-tooltip'> <i class='icon-question-sign'></i></a></label>
+    <div class="controls">
+       <select name='token[location]' id='token_location' >
+        <option selected value="">Choose Token Location</option>
+        <option value="cookie">Cookie</option>
+        <option value="header">Header</option>
+        <option value="url">URL</option> 
+      </select>
+    </div>
+  </div>
+
+    <div class="control-group">
+    <label class="control-label" for="token_name">Token Name </label>
+    <div class="controls">
+      <%= f.text_field :name %> 
+    </div>
+  </div>
+
+ 
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                tokens_path, :class => 'btn' %>
+  </div>
+<% end %>
+</div>
+
+
+<div class="span6">
+   <div id='token_url_html' style='display:none;'>
+    <h4>When using the URL option, you must supply 2 query parameters with your request</h4>
+      <ul><li>ss_token which contains the generated token value</li><li>ss_expiration which contains the epoch expiration time</li></ul>
+      <p>For details on how to generate these values, please click <a href='#'>Here</a>
+  </div>
+  <div id='token_header_html' style='display:none;'>
+     <h4>When using the Header option, you must set 2 headers with your request</h4>
+     <ul><li>X-SS-Token which contains the generated token value</li><li>X-SS-Expiration which contains the epoch expiration time</li></ul>
+  </div>
+  <div id='token_cookie_html' style='display:none;'>
+      <h4>When using the Cookie option, you must set 2 cookies with your request</h4>
+      <ul><li>ss_token which contains the generated token value</li><li>ss_expiration which contains the epoch expiration time</li></ul>
+  </div>
+</div>
+
+</div>
+
+
+

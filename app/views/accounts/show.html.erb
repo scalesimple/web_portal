@@ -1,0 +1,36 @@
+<%- model_class = Account -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+</div>
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab_show" data-toggle="tab">Details</a></li>
+    <li><a href="#tab_permissions" data-toggle="tab">Permissions</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab_show">
+      <%= render "show", :account=>@account, :model_class=>Account %>
+    </div>
+    <div class="tab-pane" id="tab_permissions">
+      <%= render "permissions", :account=>@account, :model_class=>Account %>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  // Javascript to enable link to tab
+var hash = document.location.hash;
+var prefix = "t_";
+if (hash) {
+    $('.nav-tabs a[href='+hash.replace(prefix,"")+']').tab('show');
+} 
+
+// Change hash for page-reload
+$('.nav-tabs a').on('shown', function (e) {
+    window.location.hash = e.target.hash.replace("#", "#" + prefix);
+});
+});
+</script>
+
+

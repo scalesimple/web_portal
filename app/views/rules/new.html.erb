@@ -1,0 +1,5 @@
+<%- model_class = Rule -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.rules.new', 'New Rule'], :model => model_class.model_name.human %></h1>
+</div>
+<%= render :partial => 'form' %>

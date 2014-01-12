@@ -1,0 +1,12 @@
+Dear <%= @email %>, 
+
+  Congratulations, your hostname <%= @hostname %> has been created !  You are on your way to enhancing the speed and performance of your site.  In order to activate your site, you need to take a couple final steps.
+
+  1) Create a new directory and file in your document root called /scalesimple/index.html.  This is the file that ScaleSimple will use to healthcheck your site and ensure that it is up and running
+
+  2) CNAME your hostname to <%= @hostname + '.' + $CNAME_SUFFIX %> 
+
+  Once your DNS is CNAMEd properly, you will get an activation email from us that your DNS is setup correctly.  In the meantime, if you would like to test out your hostname you can point your browser at <%= 'http://' + @hostname + '.' + $CNAME_TYPE[:test] %> 
+
+Sincerely,
+ScaleSeimple Team

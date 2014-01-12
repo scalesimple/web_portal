@@ -1,0 +1,33 @@
+<% account_permission = AccountPermission.new(:title=>"Admin") %>
+<%= form_for([account, account_permission]) do |f| %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Permission</th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% account.account_permissions.each do |permission| %>
+      <tr>
+        <td><%= permission.user.email %></td>
+        <td><%= permission.title %></td>
+        <td>
+          <% if (permission.removable_by?(current_user)) %>
+         
+          <%= link_to content_tag('i', '', class: 'icon-trash'), account_account_permission_path(account,permission), confirm: "Remove user from account", method: :delete, "modal-warning" => "acct_perms" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+      <tr>
+        <td><%= f.text_field :email, :required=>true %></td>
+        <td>Admin<%= f.hidden_field :title %></td>
+        <td><%= f.submit %></td>
+      </tr>
+    </form>
+  </tbody>
+</table>
+<% end %>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= render "layouts/head" %>
+    <%= javascript_include_tag "application" %>
+  </head>
+  <body>
+    <%= render "layouts/navbar"  %>
+
+   <div class="main">
+
+    <div class="container">
+
+      <div class="row">
+        
+        <div class="span12">
+          <% if flash[:notice] %>
+            <div class="alert alert-block"> 
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <%= flash[:notice] %>
+            </div>
+          <% end %>
+          <% if flash[:error]  %>
+            <div class="alert alert-error">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <%= flash[:error] %>
+            </div>
+          <% end %>
+          <% if flash[:alert]  %>
+            <div class="alert alert-error">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <%= flash[:alert] %>
+            </div>
+          <% end %>
+
+            <%= yield %>
+
+        </div>
+
+      </div><!--/row-->
+
+      <footer>
+        <p>&copy; ScaleSimple 2013</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+  </div> <!-- main --> 
+
+    <!-- Javascripts
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%= javascript_include_tag "application" %>
+
+  </body>
+</html>

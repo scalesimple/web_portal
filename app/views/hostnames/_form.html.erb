@@ -1,0 +1,123 @@
+<%= form_for @hostname, :html => { :class => 'form-horizontal' } do |f| %>
+
+<% if @hostname.errors.any? %>
+    <div class="error-box">
+      <div class="alert alert-error">
+      <% @hostname.errors.full_messages.each do |msg| %>
+        <p><%= msg %>
+      <% end %>
+      </div>
+    </div>
+<% end %>
+
+<div id="rootwizard">
+          <div class='widget'>
+          <div class='widget-content'>
+          <ul>
+            <li><a href="#tab1" data-toggle="tab"><span class="label">1</span>Create Hostname</a></li>
+            <li><a href="#tab2" data-toggle="tab"><span class="label">2</span>Choose Ruleset</a></li>
+            <li><a href="#tab3" data-toggle="tab"><span class="label">3</span>Set Origin</a></li>
+          </ul>
+   
+
+          <div class="tab-content">
+
+              <div class="tab-pane" id="tab1">
+                  <br/>
+                    <h3>First, pick a hostname that you want to cache, this is the hostname users type in their browser</h3>
+                    <div class="controls input-prepend">
+                      <% if @hostname.new_record? %>
+                       <span class="add-on">http://</span><span style="font-size:18px;"><%= f.text_field :name, :class => 'text_field' %></span>
+                      <% else %>
+                         <span class="add-on">http://<%= @hostname.name %></span>
+                      <% end %> 
+                    </div>
+              </div>
+
+              <div class="tab-pane" id="tab2">
+              
+                  <br/>
+                    <h3>Now, choose a ruleset you want to associate with this hostname.  Dont worry if you're not sure, you can always change it later by editing this hostname.  In fact, whenever you want to assign a ruleset, just edit your hostname and change the ruleset assigned to it.</h3>
+                    <div class="controls">
+                      <% if @hostname.new_record? %>
+                        <%= f.select :ruleset_id, @account.valid_rulesets.asc(:name).map{|r| [r.name,r.id]}, {:class => 'text_field' } %>
+                      <% else %> 
+                        <%= f.select :ruleset_id, @account.valid_rulesets.asc(:name).map{|r| [r.name,r.id]}, {:class => 'text_field' }, { :onChange => '$("#ruleset_chg_warning").modal();'} %>
+                      <% end %> 
+                      No rulesets?  <%= link_to "Create one now and come back", new_ruleset_path %> 
+                   </div>
+              </div>
+
+              <div class="tab-pane" id="tab3">
+                  <br/>
+                    <h3>Okay.  Now, we need to know how to contact your server to forward requests.  Enter either the IP Address (recommended) or hostname of the server we should use to forward requests.  This must be different than the hostname in Step 1.</h3>
+                    <div class="controls">
+                     IP or Hostname of Origin: <%= f.text_field :origin, :class => 'text_field' %>
+                    </div>
+
+                     <br/>Optional: For advanced users, some customers have multiple IP Addresses that are valid for them. This can be due to DNS round robin, GSLB, or other reasons.  If you need to whitelist additional valid IPs for your origin, please do so here.
+                     <a id='add-new-ip' class="btn btn-medium" href="#"><i class="icon-plus"></i>Add New IP</a>
+                     <div class="controls" id="ip-controls">
+                      <% i = 0 %>
+                      <% !@hostname.valid_origin_ips.nil? && @hostname.valid_origin_ips.each do |ip| %>
+                       <div id="valid_ips_<%= i.to_s %>">
+                         <input class="text_field" id="valid_ip_<%= i.to_s %>" name="hostname[valid_origin_ips][]" value="<%= ip %>" size="30" type="text" >&nbsp;&nbsp;<a href='#'><i class="icon-remove" onClick='$("#valid_ips_<%= i.to_s %>").remove();return false;'></i></a><br/><br/>
+                       </div>
+                      <% i += 1 %>
+                      <% end %>
+                     </div>
+                     <br/>
+                     <div style='text-align:center;'>
+                        <%= f.submit nil, :class => 'btn btn-primary' %>
+                     </div>
+              </div>
+          
+            <ul class="pager wizard">
+              <li class="previous first" style="display:none;"><a href="#">First</a></li>
+              <li class="previous"><a href="#">Previous</a></li>
+              <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                <li class="next"><a href="#">Next</a></li>
+            </ul>
+          </div>  <!-- end tab content --> 
+
+        </div> <!-- end widget content --> 
+
+      </div> <!-- end widget --> 
+
+</div> <!-- end rootwizard --> 
+  
+<% end %>
+
+ <div class="modal fade " id="ruleset_chg_warning">
+                 <div class="modal-header">
+                   <a class="close" data-dismiss="modal">×</a>
+                   <h3>WARNING !</h3>
+                 </div>
+                 <div class="modal-body">
+                   <p>Changing a ruleset for a hostname will automatically publish this new configuration for that hostname once you save.  If this is NOT what you want then close this window and click Cancel.  If you DO want to change the ruleset for your hostname and understand that it will be automatically activated then go for it !</p>
+                 </div>
+                 <div class="modal-footer">
+                   <a data-dismiss="modal" class="btn">Got it !</a>
+                 </div>
+  </div>
+
+<script type='text/javascript'>
+
+  $(document).ready(function() {
+    var randomNum = Math.ceil(Math.random()*2); 
+    var field_id = 'valid_ips_' + randomNum;
+
+    $('#add-new-ip').click(function() {
+      $('#ip-controls').prepend("<div id=\"" + field_id + "\">IP Address: <input class=\"text_field\" id=\"" + field_id + "\" name=\"hostname[valid_origin_ips][]\" size=\"30\" type=\"text\" ><a href='#'>&nbsp;&nbsp;<i class=\"icon-remove\" onClick='$(\"#" + field_id + "\").remove();return false;'></i></a><br/><br/></div>");
+      return false;
+    });
+
+    function removeIp(ip) {
+      $('input[name=ip]').remove();
+    }
+
+    $('#rootwizard').bootstrapWizard({'tabClass': 'bwizard-steps'});  
+    window.prettyPrint && prettyPrint()
+
+  });
+</script>

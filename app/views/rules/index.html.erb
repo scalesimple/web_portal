@@ -1,0 +1,87 @@
+<%- model_class = Rule -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %> for <%= @ruleset.name %></h1>
+</div>
+
+<h5><div class="alert alert-warn">Global Rules <small>(Every rule is evaluated for every request)</small></div></h5>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:conditions) %></th>
+      <th><%= model_class.human_attribute_name(:operation) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @rules.each do |rule| %> 
+       <% next unless rule.global? %> 
+       <tr>
+        <td><%= link_to rule.name, ruleset_rule_path(@ruleset,rule) %></td>
+        <td><%= rule.conditions_to_text %></td>
+        <td><%= rule.rule_actions_to_text %></td>
+        <td><%= time1(rule.created_at) if rule.created_at %></td>
+        <td nowrap>
+          <% unless (@ruleset.locked? && !is_global_admin?) || @ruleset.active? %>
+           <%= link_to content_tag('i', '', class: 'icon-pencil'),
+                            edit_ruleset_rule_path(@ruleset,rule)%> 
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+           <%= link_to content_tag('i', '', class: 'icon-trash'), ruleset_rule_path(@ruleset,rule) , confirm: "Are you sure you want to delete #{rule.name}?", method: :delete, "modal-warning" => "rules" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %> 
+  </tbody>
+</table>
+
+ <hr/>
+
+<h5><div class="alert alert-warn">Ordered Rules <small>(Rules are evaluated top down until a match is found)</small></div></h5>
+<span class="label label-important">IMPORTANT!   Ordered rules override previously matched global rules</span>
+<p/>
+
+
+<table  class="table table-striped">
+  <thead>
+    <tr>
+      <th>Re-Order</th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:conditions) %></th>
+      <th><%= model_class.human_attribute_name(:operation) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody class='sorted-table' id='ordered-rulesets' data-ruleset-id="<%= @ruleset.id %>">
+
+     <% i = 0 %> 
+     <% @rules.each do |rule| %>
+       <% next if rule.global? %> 
+      <tr data-id="<%= rule.id.to_s%>">
+        <td><i class='icon-move'></i></td>
+        <td><%= link_to rule.name, ruleset_rule_path(@ruleset,rule) %></td>
+        <td><%= rule.conditions_to_text %></td>
+        <td><%= rule.rule_actions_to_text %></td>
+        <td><%= time1(rule.created_at) if rule.created_at %></td>
+        <td nowrap>
+          <% unless (@ruleset.locked? && !is_global_admin?) || @ruleset.active? %>
+           <%= link_to content_tag('i', '', class: 'icon-pencil'),
+                            edit_ruleset_rule_path(@ruleset,rule)%> 
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+           <%= link_to content_tag('i', '', class: 'icon-trash'), ruleset_rule_path(@ruleset,rule) , confirm: "Are you sure you want to delete #{rule.name}?", method: :delete, "modal-warning" => "rules" %>
+          <% end %>
+        </td>
+      </tr>
+      <% i += 1 %> 
+    <% end %>
+  </tbody>
+</table>
+
+<% unless (@ruleset.locked? && !is_global_admin?) || @ruleset.active? %>
+<%= link_to t('.new', :default => t("New Rule")),
+            new_ruleset_rule_path,
+            :class => 'btn btn-primary' %>&nbsp;
+<% end %> 

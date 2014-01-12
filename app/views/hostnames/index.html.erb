@@ -1,0 +1,60 @@
+  <%- model_class = Hostname -%>
+<div class='widget '>
+
+  
+
+  <div class="widget-header">
+    <i class="icon-cloud"></i>
+    <h3><%=t '.title', :default => "Hostnames" %></h3>
+    <span  style="float:middle;"><%= link_to t('.new_hostname', :default => t("New Hostname")),
+              new_hostname_path,
+              :class => 'btn btn-secondary' %></span>
+  </div>
+
+  <div class="widget-content"> 
+
+  <div>Filter by: <%= hostname_filters(@filter).html_safe %> </div>
+  <p/>
+
+  <table class="table table-bordered table-striped table-highlight">
+    <thead>
+      <tr>
+        <th><%= model_class.human_attribute_name(:name) %></th>
+        <th> Active Ruleset</th>
+        <th> Pending Ruleset </th>
+        <th><%= model_class.human_attribute_name(:origin) %></th>
+        <th>Created</th>
+        <th>Status</th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @hostnames.each do |hostname| %>
+        <tr>
+          <td><%= link_to hostname.name, hostname_path(hostname) %></td>
+          <td><%= link_to hostname.active_ruleset.name, ruleset_path(hostname.active_ruleset) if hostname.active_ruleset %></td>
+          <td>
+            <% if hostname.active_ruleset_id == hostname.ruleset_id %> 
+            None
+            <% else %> 
+            <%= link_to hostname.ruleset.name, ruleset_path(hostname.ruleset) %>
+            <% end %> 
+          </td>
+          <td><%= hostname.origin %></td>
+          <td ><%=hostname.created_at.strftime("%m/%d/%Y %H:%M") %></td>
+          <td> <%= hostname_status_icon(hostname.hostname_status.host).html_safe %>
+          <td nowrap>
+            <%= link_to content_tag('i', '', class: 'icon-pencil'),
+                        edit_hostname_path(hostname)%> 
+              &nbsp;&nbsp;&nbsp;&nbsp;
+             <%= link_to content_tag('i', '', class: 'icon-trash'), hostname, confirm: "Are you sure you want to delete #{hostname.name}?", method: :delete, "modal-warning" => "hostnames" %>
+
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div> <!-- widget-content --> 
+</div> <!-- widget --> 
+
+

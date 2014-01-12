@@ -1,0 +1,23 @@
+<div class='widget stacked'>
+    <div class='widget-header'><h3><%= @hostname.name %></h3> </div>
+
+    <div class='widget-content'>
+
+     <h4>Ruleset</h3> 
+      <%= link_to @hostname.ruleset.name , ruleset_rules_path(@hostname.ruleset) %> 
+      
+     <p/><p/><br/>
+
+     <h4>Origin</h4>
+     <%= @hostname.origin %> 
+
+     <p/><p/><br/>
+ 
+     <h4>Valid Origin IP Addresses </h4>
+     <% @hostname.valid_origin_ips.each do |h| %> 
+         <%= (h + '<br/>').html_safe %> 
+      <% end %>  
+
+    </div>
+
+</div>

@@ -1,0 +1,32 @@
+
+<%= form_for(@purge) do |f| %>
+  <% if @purge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@purge.errors.count, "error") %> prohibited this purge from being saved:</h2>
+
+      <ul>
+      <% @purge.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :hostname, :class => 'control-label' %>
+    <div class="controls">
+     <%= f.select :hostname, @account.hostnames.asc(:name).map{|h| [h.name,h.name]}, :class => 'text_field' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="purge_Path (can include * for wildcard)">Path <small><em>(can include * for wildcard)</small></em></label>
+    <div class="controls">
+      <%= f.text_field :path, :class => 'text_field' %> <br/> example purge syntax: <br/> /index.html <br/>/images/* <br/> /images/*.jpg<br/> /my/nested/*/folders
+    </div>
+  </div>
+  
+  <div class="actions">
+    <input type='submit' value='PURGE' class='btn btn-large btn-primary'>
+  </div>
+<% end %>

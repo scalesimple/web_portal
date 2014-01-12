@@ -1,0 +1,8 @@
+<p>Welcome to ScaleSimple <%= @resource.email %>!</p>
+
+<p>In order to get started, we need you to confirm your email with the link below.  Once you do that, you will be logged in and you will need create your first account.  Once your account is setup you can start adding hostnames and start speeding up your sites !</p>
+
+<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+
+Sincerely,
+The ScaleSimple Team

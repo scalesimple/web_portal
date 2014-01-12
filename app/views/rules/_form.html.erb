@@ -1,0 +1,189 @@
+
+<%= form_for [@ruleset,@rule], :html=> {:class=>"form-horizontal"} do |f| %>
+<fieldset>
+  <legend>Enter a descriptive name for your rule</legend>
+<div class="control-group">
+<%= f.label :name, :class=>"control-label" %>
+<div class="controls">
+<%= f.text_field :name, :class=>"text_field input-large", :placeholder=>"Rule Name" %>
+<span class="help-block">Enter a descriptive name for your rule</span>
+</div>
+
+</div>
+</fieldset>
+<fieldset>
+  <legend>Conditions</legend>
+  <div class="control-group">
+    <div class="controls"> 
+    <label class="checkbox"><%= f.check_box :global %> Always apply this rule.</label><br/>
+    <label class="radio"><%= f.radio_button :match, "ALL" %> When ALL of the following conditions are met.</label>
+    <label class="radio"><%= f.radio_button :match, "ANY" %> When ANY of the following conditions are met.</label>
+    </div>
+  </div>
+    <div id="div_conditions" <% if @rule.match=="ALWAYS" %>class="hide" <% end %>>
+  <% @rule.conditions.each do |condition| 
+      conditional = condition.conditional
+    %>
+    <% if conditional[:type]=="V" %>
+      <div class="control-group">
+        <label class="control-label"><%=conditional[:label]%></label>
+        <div class="controls">
+          <select name="[conditions][<%=condition.key%>][operator]">
+            <% conditional[:operators].each do |op| %>
+            <option value="<%=op[0]%>" <% if condition.operator==op[0] %>selected<% end %>><%=op[1]%></option>
+            <% end %>
+          </select>
+          <input type="text" minlength="2" name="[conditions][<%=condition.key%>][value]" value="<%= condition.value %>" class="text_field"  />
+          <span class="help-block"><%= conditional[:help_text]%></span>
+        </div>
+      </div>
+
+    <% elsif conditional[:type]=="NV" %>
+    <div class="control-group">
+        <label class="control-label"><%=conditional[:label]%></label>
+        <div class="controls">
+          <input type="text" name="[conditions][<%=condition.key%>][name]" value="<%= condition.name %>" class="text_field" placeholder="Name" />
+          <select name="[conditions][<%=condition.key%>][operator]">
+            <% conditional[:operators].each do |op| %>
+            <option value="<%=op[0]%>"><%=op[1]%></option>
+            <% end %>
+          </select>
+          <input type="text" name="[conditions][<%=condition.key%>][value]" value="<%= condition.value %>" class="text_field" placeholder="Value" />
+          <span class="help-block"><%= conditional[:help_text]%></span>
+        </div>
+      </div>
+
+    <% elsif conditional[:type]=="DV" %>
+     <div class="control-group">
+        <label class="control-label"><%=conditional[:label]%></label>
+        <div class="controls">
+          <select name="[conditions][<%=condition.key%>][operator]">
+            <% conditional[:operators].each do |op| %>
+            <option value="<%=op[0]%>" <% if condition.operator==op[0] %>selected<% end %>><%=op[1]%></option>
+            <% end %>
+          </select>
+          <select name="[conditions][<%=condition.key%>][value]"  class="text_field">
+            <% $RULESETS_DROPDOWN[condition.key.to_sym].each do |c| %>
+              <option <%= 'selected' if c == condition.value %> ><%= c  %></option>
+            <% end %>
+          </select>
+          <span class="help-block"><%= conditional[:help_text]%></span>
+        </div>
+      </div>
+    <% end %>
+
+
+  <% end %>
+</div>
+</fieldset>
+
+<fieldset>
+  <legend>Perform the following actions</legend>
+  <% @rule.rule_actions.each do |rule_action| 
+      actionable = rule_action.actionable
+      next if actionable.nil? || actionable[:advanced] == true 
+    %>
+
+    <% if actionable[:type]=="VU" %>
+    <div class="control-group">
+      <label class="control-label"><%= actionable[:label] %></label>
+      <div class="controls">
+        <input type="number" name="rule_actions[<%= rule_action.key%>][value]" value="<%=rule_action.value%>" class="text_field input-small" placeholder="<%= actionable[:default] %>" />
+        <select name="rule_actions[<%= rule_action.key%>][unit]" class="input-medium">
+          <% actionable[:units].each do |unit| %>
+            <option <% if rule_action.unit == unit %>selected<% end %>><%= unit %></option>
+          <% end %>
+        </select>
+        <span class="help-block"><%= actionable[:help_text] %></span>
+      </div>
+    </div>
+
+    <% elsif actionable[:type]=="SV" %>
+    <div class="control-group">
+      <label class="control-label"><%= actionable[:label] %></label>
+      <div class="controls">
+        <input type="text" name="rule_actions[<%= rule_action.key%>][value]" value="<%= rule_action.value%>" class="text_field input-large"> <span class='alert'>Warning no other actions can be set with this option !!</span>
+        <span class="help-block"><%= actionable[:help_text] %></span>
+      </div>
+    </div>
+
+    <% elsif actionable[:type]=="SB" %>
+    <div class="control-group">
+      <label class="control-label"><%= actionable[:label] %></label>
+      <div class="controls">
+        <input type="hidden" name="rule_actions[<%= rule_action.key%>][value]" value="false" >
+        <input type="checkbox" name="rule_actions[<%= rule_action.key%>][value]" value="true" <%= 'checked' if rule_action.value == 'true' %> class="text_field input-large">
+         <span class='alert'>Warning no other actions can be set with this option !!</span>
+        <span class="help-block"><%= actionable[:help_text] %></span>
+      </div>
+    </div>
+
+    <% elsif actionable[:type]=="B" %>
+    <div class="control-group">
+      <label class="control-label"><%= actionable[:label] %></label>
+      <div class="controls">
+        <input type="hidden" name="rule_actions[<%= rule_action.key%>][value]" value="false" >
+        <input type="checkbox" name="rule_actions[<%= rule_action.key%>[value]" value="true" <%= 'checked' if rule_action.value == 'true' %> class="text_field input-large">
+        <span class="help-block"><%= actionable[:help_text] %></span>
+      </div>
+    </div>
+
+    <% elsif actionable[:type]=="V" %>
+    <div class="control-group">
+      <label class="control-label"><%= actionable[:label] %></label>
+      <div class="controls">
+          <input type="text" name="rule_actions[<%= rule_action.key%>][value]" value="<%= rule_action.value%>" class="text_field input-large"> 
+        <span class="help-block"><%= actionable[:help_text] %></span>
+      </div>
+    </div>
+
+    <% end %>
+
+  <% end %>
+
+   <!--- Advanced Configs --> 
+  <% @rule.rule_actions.each do |rule_action| 
+      actionable = rule_action.actionable
+      next if actionable.nil? || actionable[:advanced] == false 
+    %>
+   <div class="control-group">
+      <label class="control-label"><%= actionable[:label] %></label>
+      <div class="controls">
+         <select name="rule_actions[validate_token][value]"  class="text_field">
+            <option value="">Choose a Token</option>
+            <% @tokens.each do |t| 
+              %>
+              <option <%= selected_opt(t.id.to_s,rule_action.value) %> value="<%= t.id %>" ><%= t.name  %></option>
+            <% end %>
+          </select>
+        <span class="help-block"><%= actionable[:help_text] %></span>
+      </div>
+    </div>
+  <% end %> 
+
+ 
+</fieldset>
+
+<fieldset>
+ <div class="form-actions">
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+  ruleset_rules_path(@ruleset), :class => 'btn' %>
+</div>
+</fieldset>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('#rule_match_always').click(function(){
+      $('#div_conditions').fadeOut('slow');
+    });
+    $('#rule_match_all').click(function(){
+      alert('click');
+      $('#div_conditions').fadeIn('slow');
+    });
+    $('#rule_match_any').click(function(){
+      $('#div_conditions').fadeIn('slow');
+    })
+  });
+</script>

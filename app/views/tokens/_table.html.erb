@@ -1,0 +1,27 @@
+ <table class="table table-bordered table-striped table-highlight">
+      <thead>
+        <tr>
+
+          <th> Account </th>
+          <th> Name </th>
+          <th> Token </th>
+          <th> Location </th>
+          <th> Created</th>
+          <th><%=t '.actions', :default => t("helpers.actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tokens.each do |token| %>
+          <tr>
+            <td><%= token.account.name %></td>
+            <td><%= token.name %> </td>
+            <td><%= token.secret %></td>
+            <td><%= token.location %> </td>
+            <td><%= token.created_at.to_s(:summary) %></td>
+            <td>             
+               <%= link_to content_tag('i', '', class: 'icon-remove'), token, confirm: "Are you sure you want to revoke this token?", method: :delete, "modal-warning" => "tokens" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>

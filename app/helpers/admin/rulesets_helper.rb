@@ -1,0 +1,2 @@
+module Admin::RulesetsHelper
+end

@@ -1,0 +1,38 @@
+<div class='widget stacked'>
+
+  <div class="widget-header">
+    <i class="icon-cloud"></i>
+    <h3>Previous 100 purges </h3>
+     <span  style="float:middle;"><%= link_to t('.new_purge', :default => t("Create New Purge Request")),
+                new_purge_path,
+                :class => 'btn btn-secondary btn-medium' %></span>
+  </div>
+
+
+  <div class="widget-content">
+
+    <table class="table table-bordered table-striped table-highlight">  
+      <thead>
+       <tr>
+        <th>Hostname</th>
+        <th>Path</th>
+        <th>Submitted</th>
+       </tr>
+      </thead>
+
+    <tbody>
+    <% @purges.each do |purge| %>
+      <tr>
+        <td width='40%'><%= purge.hostname %></td>
+        <td width='40%'><%= purge.path %></td>
+        <td width='20%'><%= purge.created_at %></td>
+
+      </tr>
+    <% end %>
+    </tbody>
+    </table>
+
+  </div> <!-- end widget content --> 
+
+</div> <!-- end widget -->
+
