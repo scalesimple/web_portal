@@ -23,26 +23,27 @@ PLEASE NOTE:  We have a *LOT* to do still to make things even close to reasonabl
 
 ### Web Portal [github link](http://github.com/scalesimple/web_portal)
 
-The web portal is the main UI for configuring all of the rules, rulesets, hostnames, etc.  The UI run on rails 3.2 and Mongo 2.2 (yes we are working on a rails 4 upgrade).  TO get started, when you check out the repo and you have mongo running, you should run 
+The web portal is the main UI for configuring all of the rules, rulesets, hostnames, etc.  The UI run on rails 3.2 and Mongo 2.2 (yes we are working on a rails 4 upgrade).  TO get started, when you check out the repo and you have mongo running, you should first run the following commands to copy the template files over:
+
+   * cp config/mongoid.yml.tmpl config/mongoid.yml
+   * cp config/unicorn.rb.tpl config/unicorn.rb 
+   * cp config/initializers/global.rb.tmpl config/initializers/global.rb
+   
+Edit each of these files for your environments before starting up the servers.
+ 
+   
+Now you need to install everything and start up the server, and seed a default admin user:
 
   * bundle install 
-  * rake db:schema:load 
-  * rake db:seed
+  * bundle exec rake db:seed
+  * Start the server with either 'rails s' or 'bundle exec unicorn -c config/unicorn.rb -D -E [development | production' 
   
-This should create a default admin user for you that you can start configuring. The UI also currently relies on publishing messages to a RabbitMQ node, so if you dont have rabbitMQ running, you may experience some issues with after_save events in the models.  We currently use RabbitMQ to setup jobs to update DNS and configure Varnish.
+This should create a default admin user with the username 'admin@example.com' and password 'changeme123' for you. The UI also currently relies on publishing messages to a RabbitMQ node, so if you dont have rabbitMQ running, you may experience some issues with after_save events in the models.  We currently use RabbitMQ to setup jobs to update DNS and configure Varnish.
 
-Files you should edit 
+Once you login to the portal, you will be asked to change the password of the default admin user and create your first account.  From here, you can navigate to /admin to invite/add/approve users as needed.
 
-   * config/mongoid.yml
-   * config/environments/production.rb
-   * config/environments/development.rb
-   * config/initializers/global.rb
-   * config/initializers/devise.rb
-   * config/unicorn.rb
   
-To start the server
 
-    bundle exec unicorn -c config/unicorn.rb -D -E [development | production]
 
 ### VMODS [github link](http://github.com/scalesimple/vmods)
 
